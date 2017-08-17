@@ -1,0 +1,143 @@
+object Form1: TForm1
+  Left = 444
+  Height = 240
+  Top = 220
+  Width = 320
+  BorderStyle = bsDialog
+  Caption = 'RunChoco - экспресс установка с помощью Chocolatey'
+  ClientHeight = 240
+  ClientWidth = 320
+  Position = poScreenCenter
+  LCLVersion = '1.6.4.0'
+  object Memo1: TMemo
+    Left = 0
+    Height = 140
+    Top = 100
+    Width = 320
+    Align = alClient
+    Lines.Strings = (
+      '360ts'
+      '7zip'
+      '7zip.install'
+      'adblockplus-firefox'
+      'AdobeAIR'
+      'adobereader'
+      'aimp'
+      'audacity'
+      'autohotkey.portable'
+      'calibre'
+      'cccp'
+      'ccleaner'
+      'ConEmu'
+      'cpu-z'
+      'cyberduck'
+      'directx'
+      'DotNet4.5'
+      'dropbox'
+      'evernote'
+      'everything'
+      'f.lux'
+      'ffmpeg'
+      'Firefox'
+      'flashplayerplugin'
+      'flashplayerppapi'
+      'foxitreader'
+      'gimp'
+      'GoogleChrome'
+      'googledrive'
+      'googleearth'
+      'imgburn'
+      'jre8'
+      'k-litecodecpackfull'
+      'keepass'
+      'keepass-keepasshttp'
+      'keepass.install'
+      'kodi'
+      'libreoffice'
+      'mp3tag'
+      'mpc-hc'
+      'nano'
+      'nirlauncher'
+      'notepadplusplus'
+      'pidgin'
+      'qbittorrent'
+      'smplayer'
+      'steam'
+      'sysinternals'
+      'telegram'
+      'telegram.install'
+      'thunderbird'
+      'tor-browser'
+      'unchecky'
+      'vcredist140'
+      'vcredist2005'
+      'vcredist2008'
+      'vcredist2010'
+      'vcredist2012'
+      'vcredist2013'
+      'vcredist2015'
+      'veracrypt'
+      'vlc'
+      'windirstat'
+      'yumi'
+    )
+    TabOrder = 0
+    Visible = False
+  end
+  object btChocoRun: TButton
+    Left = 0
+    Height = 25
+    Top = 25
+    Width = 320
+    Align = alTop
+    Caption = '2. Установка программ'
+    OnClick = btChocoRunClick
+    TabOrder = 1
+  end
+  object btChocoInstall: TButton
+    Left = 0
+    Height = 25
+    Top = 0
+    Width = 320
+    Align = alTop
+    Caption = '1. Установка Chocolatey'
+    OnClick = btChocoInstallClick
+    TabOrder = 2
+  end
+  object btViewList: TButton
+    Left = 0
+    Height = 25
+    Top = 75
+    Width = 320
+    Align = alTop
+    Caption = 'Просмотр списка программ'
+    OnClick = btViewListClick
+    TabOrder = 3
+  end
+  object btUpgrade: TButton
+    Left = 0
+    Height = 25
+    Top = 50
+    Width = 320
+    Align = alTop
+    Caption = '3. Обновление программ'
+    OnClick = btUpgradeClick
+    TabOrder = 4
+  end
+  object AsyncProcess1: TAsyncProcess
+    Active = False
+    Options = []
+    Priority = ppNormal
+    StartupOptions = []
+    ShowWindow = swoNone
+    WindowColumns = 0
+    WindowHeight = 0
+    WindowLeft = 0
+    WindowRows = 0
+    WindowTop = 0
+    WindowWidth = 0
+    FillAttribute = 0
+    left = 186
+    top = 12
+  end
+end
