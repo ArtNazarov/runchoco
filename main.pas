@@ -70,12 +70,12 @@ begin
 s:=tstringlist.create;
 s.add('choco install curl -Y');
 s.add('choco upgrade curl -Y');
-s.add('curl -k https://raw.githubusercontent.com/artnazarov/runchoco/master/packages.txt > p.txt');
+s.add('curl -k -o p.txt https://raw.githubusercontent.com/artnazarov/runchoco/master/packages.txt');
 s.savetofile('temp.bat');
 execbat();
 s.free;
 while not fileexists('p.txt') do;
-memo1.lines.loadfromfile('p.txt');
+memo1.lines.LoadFromFile('p.txt');
 deletefile('p.txt');
 end;
 
@@ -106,7 +106,7 @@ begin
       scmd1:='cmd';
   scmd2:='/K temp.bat';
   ShellExecute(form1.handle, PChar ('open'), PChar(scmd1), PChar(scmd2), nil, 1);
-   //deletefile('temp.bat');
+
 end;
 
 end.
