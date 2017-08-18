@@ -25,6 +25,7 @@ type
     procedure btRefreshListClick(Sender: TObject);
     procedure btUpgradeClick(Sender: TObject);
     procedure btViewListClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
   private
     { private declarations }
   public
@@ -64,14 +65,16 @@ begin
 end;
 
 procedure TForm1.btRefreshListClick(Sender: TObject);
-var s:=tstringlist;
+var s:tstringlist;
 begin
+s:=tstringlist.create;
 s.add('choco install curl -Y');
 s.add('choco upgrade curl -Y');
-s.add('curl https://raw.githubusercontent.com/artnazarov/runchoco/master/packages > p.txt');
+s.add('curl -k https://raw.githubusercontent.com/artnazarov/runchoco/master/packages.txt > p.txt');
 s.savetofile('temp.bat');
 execbat();
 s.free;
+while not fileexists('p.txt') do;
 memo1.lines.loadfromfile('p.txt');
 deletefile('p.txt');
 end;
@@ -89,6 +92,12 @@ end;
 procedure TForm1.btViewListClick(Sender: TObject);
 begin
    memo1.Visible:= not memo1.visible;
+end;
+
+procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  if fileexists('p.txt') then deletefile('p.txt');
+  if fileexists('temp.bat') then deletefile('temp.bat');
 end;
 
 procedure TForm1.execbat;
