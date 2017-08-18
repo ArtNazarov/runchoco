@@ -18,9 +18,11 @@ type
     btChocoInstall: TButton;
     btViewList: TButton;
     btUpgrade: TButton;
+    btRefreshList: TButton;
     Memo1: TMemo;
     procedure btChocoRunClick(Sender: TObject);
     procedure btChocoInstallClick(Sender: TObject);
+    procedure btRefreshListClick(Sender: TObject);
     procedure btUpgradeClick(Sender: TObject);
     procedure btViewListClick(Sender: TObject);
   private
@@ -59,6 +61,19 @@ begin
    s.SaveToFile('temp.bat');
    execbat;
    s.free;
+end;
+
+procedure TForm1.btRefreshListClick(Sender: TObject);
+var s:=tstringlist;
+begin
+s.add('choco install curl -Y');
+s.add('choco upgrade curl -Y');
+s.add('curl https://raw.githubusercontent.com/artnazarov/runchoco/master/packages > p.txt');
+s.savetofile('temp.bat');
+execbat();
+s.free;
+memo1.lines.loadfromfile('p.txt');
+deletefile('p.txt');
 end;
 
 procedure TForm1.btUpgradeClick(Sender: TObject);

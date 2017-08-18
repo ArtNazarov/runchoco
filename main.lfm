@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 444
+  Left = 359
   Height = 240
-  Top = 220
+  Top = 209
   Width = 320
   BorderStyle = bsDialog
   Caption = 'RunChoco - экспресс установка с помощью Chocolatey'
@@ -11,8 +11,8 @@ object Form1: TForm1
   LCLVersion = '1.6.4.0'
   object Memo1: TMemo
     Left = 0
-    Height = 140
-    Top = 100
+    Height = 115
+    Top = 125
     Width = 320
     Align = alClient
     Lines.Strings = (
@@ -87,10 +87,10 @@ object Form1: TForm1
   object btChocoRun: TButton
     Left = 0
     Height = 25
-    Top = 25
+    Top = 50
     Width = 320
     Align = alTop
-    Caption = '2. Установка программ'
+    Caption = '3. Установка программ'
     OnClick = btChocoRunClick
     TabOrder = 1
   end
@@ -107,7 +107,7 @@ object Form1: TForm1
   object btViewList: TButton
     Left = 0
     Height = 25
-    Top = 75
+    Top = 100
     Width = 320
     Align = alTop
     Caption = 'Просмотр списка программ'
@@ -117,12 +117,22 @@ object Form1: TForm1
   object btUpgrade: TButton
     Left = 0
     Height = 25
-    Top = 50
+    Top = 75
     Width = 320
     Align = alTop
-    Caption = '3. Обновление программ'
+    Caption = '4. Обновление программ'
     OnClick = btUpgradeClick
     TabOrder = 4
+  end
+  object btRefreshList: TButton
+    Left = 0
+    Height = 25
+    Top = 25
+    Width = 320
+    Align = alTop
+    Caption = '2. Обновить список пакетов'
+    OnClick = btRefreshListClick
+    TabOrder = 5
   end
   object AsyncProcess1: TAsyncProcess
     Active = False
