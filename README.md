@@ -8,4 +8,4 @@ Easy to use tool for installing cholatey, post installation and upgrading of ess
 
 # magnet
 
-download using torrent http://mgnet.me/.RunChoco1
+download using torrent http://mgnet.me/.RunChoco2
