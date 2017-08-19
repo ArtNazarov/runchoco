@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  AsyncProcess, ShellAPI;
+  AsyncProcess, ShellAPI, Windows;
 
 type
 
@@ -42,6 +42,30 @@ implementation
 
 { TForm1 }
 
+function IsFileInUse(fName: string) : boolean;
+var
+  HFileRes: HFILE;
+begin
+  Result := False;
+  if not FileExists(fName) then begin
+    Exit;
+  end;
+
+  HFileRes := CreateFile(PChar(fName)
+    ,GENERIC_READ or GENERIC_WRITE
+    ,0
+    ,nil
+    ,OPEN_EXISTING
+    ,FILE_ATTRIBUTE_NORMAL
+    ,0);
+
+  Result := (HFileRes = INVALID_HANDLE_VALUE);
+
+  if not(Result) then begin
+    CloseHandle(HFileRes);
+  end;
+end;
+
 procedure TForm1.btChocoRunClick(Sender: TObject);
 var I :  Integer;  s : TStringList;
 begin
@@ -75,7 +99,9 @@ s.savetofile('temp.bat');
 execbat();
 s.free;
 while not fileexists('p.txt') do;
+while isfileinuse('p.txt') do;
 memo1.lines.LoadFromFile('p.txt');
+if memo1.lines.Count<10 then btRefreshList.Click();
 deletefile('p.txt');
 end;
 
