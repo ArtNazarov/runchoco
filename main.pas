@@ -109,6 +109,7 @@ procedure TForm1.btUpgradeClick(Sender: TObject);
 var s : TStringList;
 begin
  s:=TStringList.create;
+ s.add('choco feature enable -n allowGlobalConfirmation');
  s.add('choco upgrade all');
  s.SaveToFile('temp.bat');
  execbat();
