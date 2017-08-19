@@ -1,6 +1,5 @@
 360ts
 7zip
-7zip.install
 adblockplus-firefox
 AdobeAIR
 adobereader
@@ -22,17 +21,21 @@ everything
 f.lux
 ffmpeg
 Firefox
+filezilla
 flashplayerplugin
 flashplayerppapi
 foobar2000
 foxitreader
+fsviewer
 gimp
+glaryutilities-free
 GoogleChrome
 googledrive
 googleearth
 gom-player
 handbrake
 imgburn
+irfanview
 itunes
 jre8
 k-litecodecpackfull
@@ -40,6 +43,8 @@ keepass
 keepass-keepasshttp
 keepass.install
 kodi
+krita
+launchy
 libreoffice
 mediamonkey
 mp3tag
@@ -50,7 +55,10 @@ nirlauncher
 notepadplusplus
 opencodecs
 opera
+revo.uninstaller
+paint.net
 pidgin
+python
 qbittorrent
 smplayer
 spotify
@@ -58,6 +66,7 @@ steam
 sysinternals
 telegram
 telegram.install
+teracopy
 thunderbird
 tor-browser
 unchecky
@@ -71,4 +80,5 @@ vcredist2015
 veracrypt
 vlc
 windirstat
+xnview
 yumi
