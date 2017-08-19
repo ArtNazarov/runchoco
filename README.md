@@ -15,4 +15,4 @@ Install in one click more than 80 useful applications
 
 download using torrent 
 загрузите торрентом
-http://mgnet.me/.RunChoco2
+http://mgnet.me/.RunChoco3
