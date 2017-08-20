@@ -57,13 +57,17 @@ nirlauncher
 notepadplusplus
 opencodecs
 opera
+realtemp
 revo.uninstaller
 paint.net
 pidgin
 python
 qbittorrent
+sdio
 smplayer
+speedfan
 spotify
+sumo
 steam
 sysinternals
 telegram
