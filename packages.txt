@@ -85,6 +85,8 @@ vcredist2013
 vcredist2015
 veracrypt
 vlc
+win-youtube-dl
 windirstat
 xnview
+youtube-dl
 yumi
