@@ -15,7 +15,9 @@ cpu-z
 cyberduck
 directx
 DotNet4.5
+driverpacksolution
 dropbox
+dumo
 evernote
 everything
 f.lux
