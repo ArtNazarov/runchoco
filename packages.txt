@@ -47,6 +47,7 @@ keepass.install
 kodi
 krita
 launchy
+lame
 libreoffice
 mediamonkey
 mp3tag
