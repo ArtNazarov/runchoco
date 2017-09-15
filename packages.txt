@@ -71,6 +71,7 @@ spotify
 sumo
 steam
 sysinternals
+tidytabs.install
 telegram
 telegram.install
 teracopy
