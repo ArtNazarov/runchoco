@@ -64,6 +64,7 @@ paint.net
 pidgin
 python
 qbittorrent
+simplednscrypt
 sdio
 smplayer
 speedfan
@@ -88,6 +89,7 @@ veracrypt
 vlc
 win-youtube-dl
 windirstat
+wps-office-free 
 xnview
 youtube-dl
 yumi
