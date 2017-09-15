@@ -1,4 +1,3 @@
-360ts
 7zip
 adblockplus-firefox
 AdobeAIR
@@ -93,3 +92,4 @@ wps-office-free
 xnview
 youtube-dl
 yumi
+360ts
