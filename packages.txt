@@ -20,6 +20,7 @@ dumo
 evernote
 everything
 f.lux
+far
 ffmpeg
 Firefox
 filezilla
