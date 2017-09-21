@@ -1,13 +1,18 @@
 unit main;
 
 {$mode objfpc}{$H+}
+// replace os to win on compilation
+{$define os}
 
 interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  AsyncProcess, ExtCtrls, ComCtrls, CheckLst, ShellAPI, Windows;
-
+  AsyncProcess, ExtCtrls, ComCtrls, CheckLst
+  {$ifdef win}
+  ShellAPI, Windows
+  {$endif}
+  ;
 const
   SAMDRIVERS_HEX_CODE : String = '6D61676E65743A3F78743D75726E3A627469683A3437653030383938333339373331633334333537303339623564626262326130383761303462626526646E3D7275746F722E696E666F5F53616D447269766572732B31372E372B2D2B2544302541312544302542312544302542452544312538302544302542442544302542382544302542412B2544302542342544312538302544302542302544302542392544302542322544302542352544312538302544302542452544302542322B2544302542342544302542422544312538462B2544302542322544312538312544302542352544312538352B57696E646F77732B253238323031372532392B50432B2537432B46554C4C2B2D2B49534F2674723D7564703A2F2F6F70656E746F722E6F72673A323731302674723D7564703A2F2F6F70656E746F722E6F72673A323731302674723D687474703A2F2F7265747261636B65722E6C6F63616C2F616E6E6F756E6365';
   MINSTALL_HEX_CODE : String = '6D61676E65743A3F78743D75726E3A627469683A3862343366366135376133393564633531323763643663343035376332613333376166306462333526646E3D7275746F722E696E666F2674723D7564703A2F2F6F70656E746F722E6F72673A323731302674723D7564703A2F2F6F70656E746F722E6F72673A323731302674723D687474703A2F2F7265747261636B65722E6C6F63616C2F616E6E6F756E6365';
@@ -36,11 +41,17 @@ type
     edCheatCode: TEdit;
     Label1: TLabel;
     Label2: TLabel;
+    lDiv1: TLabel;
+    lDiv2: TLabel;
+    lInvertAll: TLabel;
+    lSelectAll: TLabel;
+    lSkipAll: TLabel;
     Memo1: TMemo;
     Memo2: TMemo;
     PageControl1: TPageControl;
     Panel1: TPanel;
     Panel2: TPanel;
+    pApps: TPanel;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
     TabSheet3: TTabSheet;
@@ -57,6 +68,9 @@ type
     procedure Button3Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
+    procedure lInvertAllClick(Sender: TObject);
+    procedure lSelectAllClick(Sender: TObject);
+    procedure lSkipAllClick(Sender: TObject);
   private
     { private declarations }
   public
@@ -105,9 +119,12 @@ p:=TAsyncProcess.Create(NIL);
 end;
 
 function IsFileInUse(fName: string) : boolean;
+{$ifdef win}
 var
   HFileRes: HFILE;
+{$endif}
 begin
+{$ifdef win}
   Result := False;
   if not FileExists(fName) then begin
     Exit;
@@ -126,6 +143,7 @@ begin
   if not(Result) then begin
     CloseHandle(HFileRes);
   end;
+  {$endif}
 end;
 
 procedure TForm1.btChocoRunClick(Sender: TObject);
@@ -206,6 +224,7 @@ begin
  //memo1.Visible:= not memo1.visible;
 
  apps.visible:=not apps.visible;
+ papps.visible:=apps.Visible;
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
@@ -237,13 +256,35 @@ begin
 for i:=0 to memo1.Lines.Count-1 do apps.Items.Append(memo1.Lines[i]);
 end;
 
+procedure TForm1.lInvertAllClick(Sender: TObject);
+var i : Integer;
+begin
+ for i:=0 to apps.count-1 do
+    apps.Checked[i]:=not apps.checked[i];
+end;
+
+procedure TForm1.lSelectAllClick(Sender: TObject);
+var i : Integer;
+begin
+for i:=0 to apps.count-1 do
+   apps.Checked[i]:=true;
+end;
+
+procedure TForm1.lSkipAllClick(Sender: TObject);
+var i : Integer;
+begin
+for i:=0 to apps.count-1 do
+   apps.Checked[i]:=false;
+end;
+
 procedure TForm1.execbat;
 var scmd1, scmd2 : String;
 begin
       scmd1:='cmd';
   scmd2:='/K temp.bat';
+  {$ifdef win}
   ShellExecute(form1.handle, PChar ('open'), PChar(scmd1), PChar(scmd2), nil, 1);
-
+  {$endif}
 end;
 
 end.

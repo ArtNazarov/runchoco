@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 324
+  Left = 107
   Height = 443
-  Top = 111
+  Top = 135
   Width = 839
   BorderStyle = bsDialog
   Caption = 'RunChoco - экспресс установка с помощью Chocolatey'
@@ -22,23 +22,23 @@ object Form1: TForm1
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Chocolatey'
-      ClientHeight = 415
-      ClientWidth = 831
+      ClientHeight = 409
+      ClientWidth = 835
       object Panel1: TPanel
         Left = 0
-        Height = 415
+        Height = 409
         Top = 0
-        Width = 831
+        Width = 835
         Align = alClient
-        ClientHeight = 415
-        ClientWidth = 831
+        ClientHeight = 409
+        ClientWidth = 835
         ParentColor = False
         TabOrder = 0
         object btRefreshList: TButton
           Left = 1
           Height = 26
           Top = 27
-          Width = 829
+          Width = 833
           Align = alTop
           Caption = '2. Обновить список пакетов'
           OnClick = btRefreshListClick
@@ -48,7 +48,7 @@ object Form1: TForm1
           Left = 1
           Height = 26
           Top = 53
-          Width = 829
+          Width = 833
           Align = alTop
           Caption = '3. Установка программ'
           OnClick = btChocoRunClick
@@ -58,7 +58,7 @@ object Form1: TForm1
           Left = 1
           Height = 26
           Top = 79
-          Width = 829
+          Width = 833
           Align = alTop
           Caption = '4. Обновление программ'
           OnClick = btUpgradeClick
@@ -68,15 +68,15 @@ object Form1: TForm1
           Left = 1
           Height = 26
           Top = 105
-          Width = 829
+          Width = 833
           Align = alTop
           Caption = 'Просмотр списка программ'
           OnClick = btViewListClick
           TabOrder = 3
         end
         object Memo1: TMemo
-          Left = 584
-          Height = 258
+          Left = 588
+          Height = 229
           Top = 131
           Width = 246
           Align = alRight
@@ -153,7 +153,7 @@ object Form1: TForm1
           Left = 1
           Height = 26
           Top = 1
-          Width = 829
+          Width = 833
           Align = alTop
           Caption = '1. Установка Chocolatey'
           OnClick = btChocoInstallClick
@@ -161,9 +161,9 @@ object Form1: TForm1
         end
         object Apps: TCheckListBox
           Left = 1
-          Height = 258
+          Height = 229
           Top = 131
-          Width = 583
+          Width = 587
           Align = alClient
           ItemHeight = 0
           TabOrder = 6
@@ -172,12 +172,72 @@ object Form1: TForm1
         object btRemovePackages: TButton
           Left = 1
           Height = 25
-          Top = 389
-          Width = 829
+          Top = 383
+          Width = 833
           Align = alBottom
           Caption = 'Удалить программы'
           OnClick = btRemovePackagesClick
           TabOrder = 7
+        end
+        object pApps: TPanel
+          Left = 1
+          Height = 23
+          Top = 360
+          Width = 833
+          Align = alBottom
+          ClientHeight = 23
+          ClientWidth = 833
+          ParentColor = False
+          TabOrder = 8
+          Visible = False
+          object lSelectAll: TLabel
+            Left = 1
+            Height = 21
+            Top = 1
+            Width = 111
+            Align = alLeft
+            Caption = 'Выделить всё'
+            ParentColor = False
+            OnClick = lSelectAllClick
+          end
+          object lDiv1: TLabel
+            Left = 112
+            Height = 21
+            Top = 1
+            Width = 5
+            Align = alLeft
+            Caption = ' '
+            ParentColor = False
+          end
+          object lInvertAll: TLabel
+            Left = 117
+            Height = 21
+            Top = 1
+            Width = 170
+            Align = alLeft
+            Caption = 'Обратить выделение'
+            ParentColor = False
+            OnClick = lInvertAllClick
+          end
+          object lDiv2: TLabel
+            Left = 287
+            Height = 21
+            Top = 1
+            Width = 5
+            Align = alLeft
+            Caption = ' '
+            ParentColor = False
+          end
+          object lSkipAll: TLabel
+            Left = 292
+            Height = 21
+            Top = 1
+            Width = 141
+            Align = alLeft
+            Caption = 'Снять выделение'
+            ParentColor = False
+            OnClick = lSkipAllClick
+          end
         end
       end
     end
