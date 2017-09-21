@@ -10,9 +10,3 @@ Install in one click more than 80 useful applications
 # screenshot
 
 ![Screenshot](https://dl.dropbox.com/s/f6umwswtww97lm8/runchoco.jpg)
-
-# magnet
-
-download using torrent 
-загрузите торрентом
-http://mgnet.me/.RunChoco3
