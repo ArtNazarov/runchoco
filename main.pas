@@ -55,6 +55,7 @@ type
     Panel2: TPanel;
     Panel3: TPanel;
     pApps: TPanel;
+    Info: TStatusBar;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
     TabSheet3: TTabSheet;
@@ -80,15 +81,57 @@ type
   public
     { public declarations }
     procedure execbat();
+    procedure disable_buttons;
+    procedure enable_buttons;
   end;
 
   function StringToHex(S: String): string;
 function HexToString(H: String): String;
 
+function StartProcess(ExeName: string; CmdLineArgs: string = '';
+  ShowWindow: boolean = True; WaitForFinish: boolean = False): integer;
 var
   Form1: TForm1;
 
 implementation
+
+function StartProcess(ExeName: string; CmdLineArgs: string = '';
+  ShowWindow: boolean = True; WaitForFinish: boolean = False): integer;
+var
+  StartInfo: TStartupInfo;
+  ProcInfo: TProcessInformation;
+begin
+form1.info.SimpleText:='Выполняется задача... ждите';
+form1.disable_buttons;
+Application.ProcessMessages;
+  //Simple wrapper for the CreateProcess command
+  //returns the process id of the started process.
+  FillChar(StartInfo,SizeOf(TStartupInfo),#0);
+  FillChar(ProcInfo,SizeOf(TProcessInformation),#0);
+  StartInfo.cb := SizeOf(TStartupInfo);
+
+  if not(ShowWindow) then begin
+    StartInfo.dwFlags := STARTF_USESHOWWINDOW;
+    StartInfo.wShowWindow := SW_HIDE;
+  end;
+
+  CreateProcess(nil,PChar(ExeName + ' ' + CmdLineArgs),nil,nil,False,
+    CREATE_NEW_PROCESS_GROUP + NORMAL_PRIORITY_CLASS,nil,nil,StartInfo,
+    ProcInfo);
+
+  Result := ProcInfo.dwProcessId;
+
+  if WaitForFinish then begin
+    WaitForSingleObject(ProcInfo.hProcess,Infinite);
+  end;
+
+  //close process & thread handles
+  CloseHandle(ProcInfo.hProcess);
+  CloseHandle(ProcInfo.hThread);
+   form1.info.SimpleText:='Выполнено';
+   form1.enable_buttons;
+   Application.ProcessMessages;
+end;
 
 
 
@@ -189,8 +232,8 @@ s.add('curl -k -o p.txt https://raw.githubusercontent.com/artnazarov/runchoco/ma
 s.savetofile('temp.bat');
 execbat();
 s.free;
-while not fileexists('p.txt') do;
-while isfileinuse('p.txt') do;
+while not fileexists('p.txt') do Application.ProcessMessages;
+while isfileinuse('p.txt') do Application.ProcessMessages;
 memo1.lines.LoadFromFile('p.txt');
 if memo1.lines.Count<10 then btRefreshList.Click();
 deletefile('p.txt');
@@ -221,8 +264,8 @@ execbat();
 s.free;
 f:=TStringList.Create;
 apps.Clear;
-while not fileexists('search.txt') do;
-while isfileinuse('search.txt') do;
+while not fileexists('search.txt') do Application.ProcessMessages;
+while isfileinuse('search.txt') do Application.ProcessMessages;
 f.LoadFromFile('search.txt');
 for i:=1 to f.count-1 do
     apps.Items.Add(Copy(f[i], 0, Pos(' ', f[i])));
@@ -304,11 +347,38 @@ end;
 procedure TForm1.execbat;
 var scmd1, scmd2 : String;
 begin
+     disable_buttons;
       scmd1:='cmd';
   scmd2:='/K temp.bat';
   {$ifdef win}
-  ShellExecute(form1.handle, PChar ('open'), PChar(scmd1), PChar(scmd2), nil, 1);
+  //ShellExecute(form1.handle, PChar ('open'), PChar(scmd1), PChar(scmd2), nil, 1);
+  startProcess('temp.bat', '', False, True);
   {$endif}
+
+end;
+
+procedure TForm1.enable_buttons;
+begin
+         btChocoInstall.Enabled:=True;
+       btRefreshList.Enabled:=True;
+       btChocoRun.Enabled:=True;
+       btSearch.Enabled:=True;
+       btUpgrade.Enabled:=True;
+       btViewList.Enabled:=True;
+       btRemovePackages.Enabled:=True;
+       application.ProcessMessages;
+end;
+
+procedure TForm1.disable_buttons;
+begin
+       btChocoInstall.Enabled:=False;
+       btRefreshList.Enabled:=False;
+       btChocoRun.Enabled:=False;
+       btSearch.Enabled:=False;
+       btUpgrade.Enabled:=False;
+       btViewList.Enabled:=False;
+       btRemovePackages.Enabled:=False;
+       application.ProcessMessages;
 end;
 
 end.

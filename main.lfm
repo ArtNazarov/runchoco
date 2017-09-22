@@ -1,11 +1,11 @@
 object Form1: TForm1
-  Left = 222
-  Height = 443
-  Top = 150
+  Left = 527
+  Height = 445
+  Top = 58
   Width = 839
   BorderStyle = bsDialog
   Caption = 'RunChoco - экспресс установка с помощью Chocolatey'
-  ClientHeight = 443
+  ClientHeight = 445
   ClientWidth = 839
   OnClose = FormClose
   OnCreate = FormCreate
@@ -13,7 +13,7 @@ object Form1: TForm1
   LCLVersion = '1.6.4.0'
   object PageControl1: TPageControl
     Left = 0
-    Height = 443
+    Height = 422
     Top = 0
     Width = 839
     ActivePage = TabSheet1
@@ -22,15 +22,15 @@ object Form1: TForm1
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Chocolatey'
-      ClientHeight = 415
+      ClientHeight = 394
       ClientWidth = 831
       object Panel1: TPanel
         Left = 0
-        Height = 415
+        Height = 394
         Top = 0
         Width = 831
         Align = alClient
-        ClientHeight = 415
+        ClientHeight = 394
         ClientWidth = 831
         ParentColor = False
         TabOrder = 0
@@ -76,7 +76,7 @@ object Form1: TForm1
         end
         object Memo1: TMemo
           Left = 584
-          Height = 210
+          Height = 189
           Top = 156
           Width = 246
           Align = alRight
@@ -161,7 +161,7 @@ object Form1: TForm1
         end
         object Apps: TCheckListBox
           Left = 1
-          Height = 210
+          Height = 189
           Top = 156
           Width = 583
           Align = alClient
@@ -172,7 +172,7 @@ object Form1: TForm1
         object btRemovePackages: TButton
           Left = 1
           Height = 25
-          Top = 389
+          Top = 368
           Width = 829
           Align = alBottom
           Caption = 'Удалить программы'
@@ -182,7 +182,7 @@ object Form1: TForm1
         object pApps: TPanel
           Left = 1
           Height = 23
-          Top = 366
+          Top = 345
           Width = 829
           Align = alBottom
           ClientHeight = 23
@@ -381,6 +381,13 @@ object Form1: TForm1
         TabOrder = 1
       end
     end
+  end
+  object Info: TStatusBar
+    Left = 0
+    Height = 23
+    Top = 422
+    Width = 839
+    Panels = <>
   end
   object AsyncProcess1: TAsyncProcess
     Active = False
