@@ -2,7 +2,7 @@ unit main;
 
 {$mode objfpc}{$H+}
 // replace os to win on compilation
-{$define os}
+{$define win}
 
 interface
 
@@ -10,7 +10,7 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   AsyncProcess, ExtCtrls, ComCtrls, CheckLst
   {$ifdef win}
-  ShellAPI, Windows
+  , ShellAPI, Windows
   {$endif}
   ;
 const
@@ -38,7 +38,9 @@ type
     Apps: TCheckListBox;
     btCheatCode: TButton;
     btRemovePackages: TButton;
+    btSearch: TButton;
     edCheatCode: TEdit;
+    edSearch: TEdit;
     Label1: TLabel;
     Label2: TLabel;
     lDiv1: TLabel;
@@ -51,6 +53,7 @@ type
     PageControl1: TPageControl;
     Panel1: TPanel;
     Panel2: TPanel;
+    Panel3: TPanel;
     pApps: TPanel;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
@@ -61,6 +64,7 @@ type
     procedure btChocoInstallClick(Sender: TObject);
     procedure btRefreshListClick(Sender: TObject);
     procedure btRemovePackagesClick(Sender: TObject);
+    procedure btSearchClick(Sender: TObject);
     procedure btUpgradeClick(Sender: TObject);
     procedure btViewListClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
@@ -205,6 +209,26 @@ begin
     end;
    s.savetofile('temp.bat');
    execbat;
+end;
+
+procedure TForm1.btSearchClick(Sender: TObject);
+var s, f : TStringList    ;  i : Integer;
+begin
+s:=TStringList.Create;
+s.add('choco search '+edSearch.text+' > search.txt');
+s.savetofile('temp.bat');
+execbat();
+s.free;
+f:=TStringList.Create;
+apps.Clear;
+while not fileexists('search.txt') do;
+while isfileinuse('search.txt') do;
+f.LoadFromFile('search.txt');
+for i:=1 to f.count-1 do
+    apps.Items.Add(Copy(f[i], 0, Pos(' ', f[i])));
+f.free;
+deletefile('search.txt');
+if not apps.Visible then btViewList.Click;
 end;
 
 procedure TForm1.btUpgradeClick(Sender: TObject);
