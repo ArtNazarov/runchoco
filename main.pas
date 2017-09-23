@@ -237,7 +237,7 @@ begin
 while not fileexists('list.txt') do Application.ProcessMessages;
 while isfileinuse('list.txt') do Application.ProcessMessages;
 f.LoadFromFile('list.txt');
-for i:=1 to f.count-1 do
+for i:=1 to f.count-2 do
     apps.Items.Add(Copy(f[i], 0, Pos(' ', f[i])));
 f.free;
 deletefile('list.txt');
@@ -289,7 +289,7 @@ apps.Clear;
 while not fileexists('search.txt') do Application.ProcessMessages;
 while isfileinuse('search.txt') do Application.ProcessMessages;
 f.LoadFromFile('search.txt');
-for i:=1 to f.count-1 do
+for i:=1 to f.count-2 do
     apps.Items.Add(Copy(f[i], 0, Pos(' ', f[i])));
 f.free;
 deletefile('search.txt');
