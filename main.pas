@@ -199,11 +199,18 @@ procedure TForm1.btChocoRunClick(Sender: TObject);
 var I :  Integer;  s : TStringList;
 begin
    s:=TStringList.Create;
+   //memo1.clear;
+   s.add('choco feature enable -n allowGlobalConfirmation');
    for I:=0 to apps.items.count-1 do
     begin
       if apps.Checked[i] then
-      s.add('choco install '+apps.items[i]+' -Y');
+      begin
+      s.add('choco install '+apps.items[i]+' -y');
+      //memo1.lines.add('choco install '+apps.items[i]+' -y');
+      end;
+
     end;
+   //memo1.visible:=true;
    s.savetofile('temp.bat');
    execbat;
 end;
@@ -225,7 +232,7 @@ begin
 end;
 
 procedure TForm1.btInstalledAppsClick(Sender: TObject);
-var s, f: TStringList;   i : Integer;
+var s, f: TStringList;  n : String; i : Integer;
 begin
  s:=TStringList.create;
  s.add('choco list --local-only > list.txt');
@@ -238,10 +245,18 @@ while not fileexists('list.txt') do Application.ProcessMessages;
 while isfileinuse('list.txt') do Application.ProcessMessages;
 f.LoadFromFile('list.txt');
 for i:=1 to f.count-2 do
-    apps.Items.Add(Copy(f[i], 0, Pos(' ', f[i])));
-f.free;
+     begin
+     n:=Copy(f[i], 0, Pos(' ', f[i]));
+     if (n<>'') then
+        apps.Items.Add(n);
+     end;
+
 deletefile('list.txt');
 if not apps.Visible then btViewList.Click;
+i:=f.count-1;
+n:=Copy(f[i], 0, Pos(' ', f[i]));
+info.SimpleText:='Установлено '+n;
+f.free;
 end;
 
 procedure TForm1.btRefreshListClick(Sender: TObject);
@@ -277,7 +292,7 @@ begin
 end;
 
 procedure TForm1.btSearchClick(Sender: TObject);
-var s, f : TStringList    ;  i : Integer;
+var s, f : TStringList    ; n : String;  i : Integer;
 begin
 s:=TStringList.Create;
 s.add('choco search '+edSearch.text+' > search.txt');
@@ -290,10 +305,18 @@ while not fileexists('search.txt') do Application.ProcessMessages;
 while isfileinuse('search.txt') do Application.ProcessMessages;
 f.LoadFromFile('search.txt');
 for i:=1 to f.count-2 do
-    apps.Items.Add(Copy(f[i], 0, Pos(' ', f[i])));
-f.free;
+    begin
+    n:=Copy(f[i], 0, Pos(' ', f[i]));
+    if (n<>'') then
+    apps.Items.Add(n);
+    end;
+
 deletefile('search.txt');
 if not apps.Visible then btViewList.Click;
+i:=f.count-1;
+n:=Copy(f[i], 0, Pos(' ', f[i]));
+info.SimpleText:='Найдено '+n;
+f.free;
 end;
 
 procedure TForm1.btUpgradeClick(Sender: TObject);
