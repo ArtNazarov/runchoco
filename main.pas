@@ -10,7 +10,7 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   AsyncProcess, ExtCtrls, ComCtrls, CheckLst
   {$ifdef win}
-  , ShellAPI, Windows
+  ,  Windows
   {$endif}
   ;
 const
@@ -21,7 +21,22 @@ const
 type
 
 
+  { TExecuteExt }
 
+  TExecuteExt = class(TThread)
+    public
+      WND : HWND;
+      scmd1,  scmd2 : String;
+      optShowWindow, optWait : Boolean;
+         Constructor Create(CreateSuspended : boolean);
+
+    procedure JobRun;
+    private
+      fStatusText : string;
+      procedure status;
+    protected
+    procedure Execute; override;
+  end;
 
   { TForm1 }
 
@@ -88,7 +103,7 @@ type
     procedure execbat();
     procedure disable_buttons;
     procedure enable_buttons;
-
+    procedure write_to_bat(s : TStringList);
   end;
 
   function StringToHex(S: String): string;
@@ -199,6 +214,40 @@ begin
   {$endif}
 end;
 
+{ TExecuteExt }
+
+constructor TExecuteExt.Create(CreateSuspended: boolean);
+begin
+  FreeOnTerminate := True;
+  inherited Create(CreateSuspended);
+end;
+
+procedure TExecuteExt.JobRun;
+begin
+   scmd1:='cmd';
+  scmd2:='/K temp.bat';
+  {$ifdef win}
+  if optShowWindow then
+
+   ShellExecute(WND, PChar ('open'), PChar(scmd1), PChar(scmd2),nil,SW_SHOWNORMAL)
+  else
+    ShellExecute(WND, PChar ('open'), PChar(scmd1), PChar(scmd2),nil,SW_HIDE);
+  {$endif}
+  fStatusText:='Выполняется...';
+  Synchronize(@status);
+  Terminate;
+end;
+
+procedure TExecuteExt.status;
+begin
+  form1.Info.SimpleText:=fStatusText;
+end;
+
+procedure TExecuteExt.Execute;
+begin
+   JobRun;
+end;
+
 procedure TForm1.btChocoRunClick(Sender: TObject);
 var I :  Integer;  s : TStringList;
 begin
@@ -215,7 +264,7 @@ begin
 
     end;
    //memo1.visible:=true;
-   s.savetofile('temp.bat');
+   write_to_bat(s);
    execbat;
 end;
 
@@ -234,7 +283,7 @@ var s : TStringList;
 begin
    s:=TStringList.create;
    s.add('@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString(''https://chocolatey.org/install.ps1''))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"');
-   s.SaveToFile('temp.bat');
+   write_to_bat(s);
    execbat;
    s.free;
 end;
@@ -244,7 +293,7 @@ var s, f: TStringList;  n : String; i : Integer;
 begin
  s:=TStringList.create;
  s.add('choco list --local-only > list.txt');
- s.SaveToFile('temp.bat');
+ write_to_bat(s);
  execbat();
  s.free();
  f:=TStringList.Create;
@@ -274,7 +323,7 @@ s:=tstringlist.create;
 s.add('choco install curl -Y');
 s.add('choco upgrade curl -Y');
 s.add('curl -k -o p.txt https://raw.githubusercontent.com/artnazarov/runchoco/master/packages.txt');
-s.savetofile('temp.bat');
+write_to_bat(s); ;
 execbat();
 s.free;
 while not fileexists('p.txt') do Application.ProcessMessages;
@@ -295,7 +344,7 @@ begin
       if apps.Checked[i] then
       s.add('choco uninstall '+apps.items[i]+' -Y');
     end;
-   s.savetofile('temp.bat');
+   write_to_bat(s);
    execbat;
 end;
 
@@ -334,13 +383,12 @@ begin
  s:=TStringList.create;
  s.add('choco feature enable -n allowGlobalConfirmation');
  s.add('choco upgrade all');
- s.SaveToFile('temp.bat');
+ write_to_bat(s);
  execbat();
  s.free();
 end;
 
 procedure TForm1.btViewListClick(Sender: TObject);
-var i : Integer;
 begin
  //memo1.Visible:= not memo1.visible;
 
@@ -406,17 +454,19 @@ for i:=0 to apps.count-1 do
 end;
 
 procedure TForm1.execbat;
-var scmd1, scmd2 : String;
+var job : TExecuteExt;
 begin
      disable_buttons;
-      scmd1:='cmd';
-  scmd2:='/K temp.bat';
-  {$ifdef win}
-  if optShowWindow then
-    ShellExecute(form1.handle, PChar ('open'), PChar(scmd1), PChar(scmd2),nil,SW_SHOWNORMAL)
-  else
-      startProcess('temp.bat', '', optShowWindow, optWait);
-  {$endif}
+     job:=TExecuteExt.Create(True);
+     job.optShowWindow:=optShowWindow;
+     job.optWait:=optWait;
+     job.WND:=form1.Handle;
+     job.Start;
+     while not job.Terminated do
+           begin
+
+                Application.ProcessMessages;
+           end;
  enable_buttons;
 end;
 
@@ -430,6 +480,13 @@ begin
        btViewList.Enabled:=True;
        btRemovePackages.Enabled:=True;
        application.ProcessMessages;
+end;
+
+procedure TForm1.write_to_bat(s: TStringList);
+begin
+  s.add('exit');
+  s.Insert(0, '@echo off');
+  s.savetofile('temp.bat');
 end;
 
 procedure TForm1.disable_buttons;
