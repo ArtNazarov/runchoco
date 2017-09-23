@@ -256,6 +256,7 @@ object Form1: TForm1
             Width = 712
             Align = alLeft
             HideSelection = False
+            OnChange = edSearchChange
             TabOrder = 0
           end
           object btSearch: TButton
@@ -329,11 +330,11 @@ object Form1: TForm1
     end
     object TabSheet3: TTabSheet
       Caption = 'Помощь'
-      ClientHeight = 415
+      ClientHeight = 369
       ClientWidth = 831
       object Memo2: TMemo
         Left = 0
-        Height = 415
+        Height = 369
         Top = 0
         Width = 831
         Align = alClient
@@ -348,10 +349,11 @@ object Form1: TForm1
         TabOrder = 0
       end
     end
-    object TabSheet4: TTabSheet
+    object tabCheating: TTabSheet
       Caption = 'Cheat options'
-      ClientHeight = 415
+      ClientHeight = 369
       ClientWidth = 831
+      TabVisible = False
       object Label2: TLabel
         Left = 0
         Height = 15

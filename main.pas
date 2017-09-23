@@ -60,7 +60,7 @@ type
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
     TabSheet3: TTabSheet;
-    TabSheet4: TTabSheet;
+    tabCheating: TTabSheet;
     procedure btCheatCodeClick(Sender: TObject);
     procedure btChocoRunClick(Sender: TObject);
     procedure btChocoInstallClick(Sender: TObject);
@@ -73,6 +73,7 @@ type
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
+    procedure edSearchChange(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure lInvertAllClick(Sender: TObject);
@@ -82,9 +83,12 @@ type
     { private declarations }
   public
     { public declarations }
+    optShowWindow : boolean;
+    optWait : boolean;
     procedure execbat();
     procedure disable_buttons;
     procedure enable_buttons;
+
   end;
 
   function StringToHex(S: String): string;
@@ -104,7 +108,7 @@ var
   ProcInfo: TProcessInformation;
 begin
 form1.info.SimpleText:='Выполняется задача... ждите';
-form1.disable_buttons;
+//form1.disable_buttons;
 Application.ProcessMessages;
   //Simple wrapper for the CreateProcess command
   //returns the process id of the started process.
@@ -131,7 +135,7 @@ Application.ProcessMessages;
   CloseHandle(ProcInfo.hProcess);
   CloseHandle(ProcInfo.hThread);
    form1.info.SimpleText:='Выполнено';
-   form1.enable_buttons;
+   //form1.enable_buttons;
    Application.ProcessMessages;
 end;
 
@@ -219,6 +223,10 @@ procedure TForm1.btCheatCodeClick(Sender: TObject);
 begin
   if edCheatCode.Text = 'KIRA' then
      tabSheet2.TabVisible:=true;
+  if edCheatCode.Text = 'SHOW-TERM' then
+      optShowWindow:=true;
+  if edCheatCode.Text = 'NO-WAIT' then
+      optWait:=False;
 end;
 
 procedure TForm1.btChocoInstallClick(Sender: TObject);
@@ -294,6 +302,7 @@ end;
 procedure TForm1.btSearchClick(Sender: TObject);
 var s, f : TStringList    ; n : String;  i : Integer;
 begin
+if edSearch.Text='IDDQD' then begin tabCheating.tabVisible:=true; exit; end;
 s:=TStringList.Create;
 s.add('choco search '+edSearch.text+' > search.txt');
 s.savetofile('temp.bat');
@@ -355,6 +364,11 @@ begin
 magnet(hextostring(SAMDRIVERS_HEX_CODE));
 end;
 
+procedure TForm1.edSearchChange(Sender: TObject);
+begin
+
+end;
+
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   if fileexists('p.txt') then deletefile('p.txt');
@@ -364,6 +378,8 @@ end;
 procedure TForm1.FormCreate(Sender: TObject);
 var i : integer;
 begin
+optShowWindow:=False;
+optWait:=True;
   apps.Clear;
 for i:=0 to memo1.Lines.Count-1 do apps.Items.Append(memo1.Lines[i]);
 end;
@@ -396,10 +412,12 @@ begin
       scmd1:='cmd';
   scmd2:='/K temp.bat';
   {$ifdef win}
-  //ShellExecute(form1.handle, PChar ('open'), PChar(scmd1), PChar(scmd2), nil, 1);
-  startProcess('temp.bat', '', False, True);
+  if optShowWindow then
+    ShellExecute(form1.handle, PChar ('open'), PChar(scmd1), PChar(scmd2),nil,SW_SHOWNORMAL)
+  else
+      startProcess('temp.bat', '', optShowWindow, optWait);
   {$endif}
-
+ enable_buttons;
 end;
 
 procedure TForm1.enable_buttons;
