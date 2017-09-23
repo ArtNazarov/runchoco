@@ -39,6 +39,7 @@ type
     btCheatCode: TButton;
     btRemovePackages: TButton;
     btSearch: TButton;
+    btInstalledApps: TButton;
     edCheatCode: TEdit;
     edSearch: TEdit;
     Label1: TLabel;
@@ -63,6 +64,7 @@ type
     procedure btCheatCodeClick(Sender: TObject);
     procedure btChocoRunClick(Sender: TObject);
     procedure btChocoInstallClick(Sender: TObject);
+    procedure btInstalledAppsClick(Sender: TObject);
     procedure btRefreshListClick(Sender: TObject);
     procedure btRemovePackagesClick(Sender: TObject);
     procedure btSearchClick(Sender: TObject);
@@ -220,6 +222,26 @@ begin
    s.SaveToFile('temp.bat');
    execbat;
    s.free;
+end;
+
+procedure TForm1.btInstalledAppsClick(Sender: TObject);
+var s, f: TStringList;   i : Integer;
+begin
+ s:=TStringList.create;
+ s.add('choco list --local-only > list.txt');
+ s.SaveToFile('temp.bat');
+ execbat();
+ s.free();
+ f:=TStringList.Create;
+ apps.Clear;
+while not fileexists('list.txt') do Application.ProcessMessages;
+while isfileinuse('list.txt') do Application.ProcessMessages;
+f.LoadFromFile('list.txt');
+for i:=1 to f.count-1 do
+    apps.Items.Add(Copy(f[i], 0, Pos(' ', f[i])));
+f.free;
+deletefile('list.txt');
+if not apps.Visible then btViewList.Click;
 end;
 
 procedure TForm1.btRefreshListClick(Sender: TObject);
